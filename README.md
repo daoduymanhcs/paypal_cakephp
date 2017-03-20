@@ -35,7 +35,7 @@ Thực hiện
 - Tạo demo thanh toán
 1. Tìm hiểu API thanh toán bằng paypal account và credit card : http://paypal.github.io/PayPal-PHP-SDK/sample/#payments
 2. Tạo function để sử dụng nhiều lần xác nhận tài khoản paypal account: 
-> public function apiContext() {
+public function apiContext() {
 		return new \PayPal\Rest\ApiContext(
 		    new \PayPal\Auth\OAuthTokenCredential(
 		        'Ac7PY0OeAj10GxvsE1LYprqMwNeinKulWpUmHS0NPwItaghBF6bANyxuCJWflEsmnB0ubLP3CK1KaAF-',     // ClientID
@@ -43,5 +43,4 @@ Thực hiện
 		    )
 		);
 	}
-    
 3. Để kiểm tra những giao dịch đã được thực hiện thì truy cập tài khoản sandbox và theo dõi transaction tại đây: https://developer.paypal.com/developer/accounts/
