@@ -30,4 +30,73 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+    /**
+     * const
+     */
+    const ANDROID = 1;
+    const IOS = 2;
+
+    /**
+     * @param $tokenDevice
+     * @param $message
+     * @param $data
+     * @return mixed
+     */
+    public function send_push_notification($tokenDevice, $message, $data, $osType)
+    {
+        // Set POST variables
+        $url = FIREBASE_CLOULD_MESSAGEING;
+        $fields = array();
+        switch($osType) {
+            case self::ANDROID:
+                $data['body'] = $message;
+                $fields = array (
+                    'to' => $tokenDevice,
+                    'priority' => 'high',
+                    'data' => $data
+                );
+                break;
+            case self::IOS:
+                $fields = array (
+                    'to' => $tokenDevice,
+                    'priority' => 'high',
+                    'notification' => array (
+                        'body'  => $message
+                    ),
+                    'data' => $data
+                );
+                break;
+        }
+
+        $headers = array(
+            'Authorization:key=' . GOOGLE_API_KEY,
+            'Content-Type: application/json'
+        );
+
+        $pathLogHeader = WWW_ROOT . 'files' . DS . 'log_header_push_notif.txt';
+        $f = fopen($pathLogHeader, 'w');
+
+        // Open connection
+        $ch = curl_init();
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Disabling SSL Certificate support temporary
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_STDERR, $f);
+
+        // Execute post
+        $result = curl_exec($ch);
+        // Close connection
+        curl_close($ch);
+        return $result;
+    }
 }

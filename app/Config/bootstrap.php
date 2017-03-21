@@ -111,3 +111,6 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+define('FIREBASE_CLOULD_MESSAGEING', 'https://fcm.googleapis.com/fcm/send');
+define('GOOGLE_API_KEY', 'AIzaSyD-rt0wh7TJHAkYQI42P2EEnmPkuBUUm9o');
